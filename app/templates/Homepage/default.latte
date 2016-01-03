@@ -1,0 +1,51 @@
+{block content}
+<div class="row-fluid">
+	<div class="span5">
+		<h4>Deployable projects:</h4>
+		{if count($deployableDirs) > 0}
+			<table class="table table-bordered">
+				<tr>
+					<th>Project</th>
+					<th class="center">Current branch</th>
+					<th class="center">Action</th>
+				</tr>
+				<tr n:foreach="$deployableDirs as $dd" n:class="$iterator->isOdd() ? odd : even">
+					<td>{$dd['directory']|truncate:25}</td>
+          			<td class="center">{$dd['branch']}</td>
+					<td class="center">
+						{if !$dd['isOnDeployBranch']}
+                			Not on deploy branch
+						{elseif !$dd['isClean']}
+							Not clean repository
+						{elseif !$dd['isUpToDate']}
+							New commits on server
+						{else}
+							<a href="{link deploy, $dd['directory'], 'test'}" class="btn btn-warning"><i class="icon-share-alt icon-white"></i> Virtual deploy</a>
+						{/if}
+					</td>
+				</tr>
+			</table>
+		{else}
+			<strong>No deployable project found.</strong>
+		{/if}
+	</div>
+
+	{ifset $result}
+		<div class="span4">
+			<h4>Result log:</h4>
+			{$result|nl2br|noescape}
+		</div>
+
+		<div class="span3">
+			{control realDeploy}
+		</div>
+	{/ifset}
+</div>
+{/block}
+
+{block head}
+	<style>
+		.fixed { position: fixed; }
+		.table .center { text-align: center; }
+	</style>
+{/block}

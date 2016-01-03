@@ -1,0 +1,7 @@
+{
+	"require":
+	{
+		"nette/nette": "~2.3.0",
+		"dg/ftp-deployment": "~2.0"
+	}
+}

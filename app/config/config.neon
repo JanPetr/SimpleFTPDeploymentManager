@@ -1,0 +1,39 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+#
+# If you don't protect this directory from direct web access, anybody will be able to see your passwords.
+# http://nette.org/security-warning
+#
+
+parameters:
+	deploymentDir: %appDir%/../vendor/dg/ftp-deployment/Deployment/
+	rootDir: %appDir%/../../
+	deploymentConfig:
+		deployBranch: master
+		allowOnlyClean: true
+		allowOnlyUpToDate: true
+
+php:
+	date.timezone: Europe/Prague
+
+nette:
+	application:
+		errorPresenter: Error
+
+	database:
+		dsn: 'mysql:host=localhost;dbname=test'
+		user:
+		password:
+
+	session:
+		expiration: 14 days
+
+di:
+	accessors: true
+
+services:
+	routerFactory: RouterFactory
+	router: @routerFactory::createRouter
+
+	gitManager: GitManager
+	deploymentManager: DeploymentManager(%rootDir%, %deploymentDir%, %deploymentConfig%, @gitManager)
